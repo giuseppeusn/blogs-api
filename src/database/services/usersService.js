@@ -7,7 +7,7 @@ const userLogin = async (email, password) => {
     return { code: StatusCodes.BAD_REQUEST, message: ReasonPhrases.REQUIRED_FIELDS };
   }
 
-  const user = await User.findOne({ where: { email, password } });
+  const user = await User.findOne({ where: { email } });
 
   if (!user || user.password !== password) {
     return { code: StatusCodes.BAD_REQUEST, message: ReasonPhrases.INVALID_FIELDS };
