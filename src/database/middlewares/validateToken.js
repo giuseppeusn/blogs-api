@@ -4,22 +4,22 @@ const { StatusCodes, ReasonPhrases } = require('../../utils/httpStatusCodes');
 
 const validateToken = async (req, res, next) => {
   const token = req.headers.authorization;
-
-  if (token) {
+  
+  if (!token) {
     return res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.TOKEN_NOT_FOUND });
   }
 
-  const { JWT_SECRET } = process.env;
+  try {
+    const { JWT_SECRET } = process.env;
 
-  const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-  const user = await User.findOne({ where: { username: decoded.data.username } });
+    await User.findOne({ where: { displayName: decoded.data.displayName } });
 
-  if (!user) {
+    return next();
+  } catch (err) {
     return res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.EXPIRED_TOKEN });
   }
-
-  return next();
 };
 
 module.exports = {

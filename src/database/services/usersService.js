@@ -40,7 +40,11 @@ const createUser = async ({ displayName, email, password, image }) => {
   return { code: StatusCodes.CREATED, token };
 };
 
+const getAllUsers = async () => User.findAll({ attributes:
+  ['id', 'displayName', 'email', 'image'] });
+
 module.exports = {
   userLogin,
   createUser,
+  getAllUsers,
 };
