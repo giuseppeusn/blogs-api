@@ -19,6 +19,26 @@ const userLogin = async (req, res) => {
   }
 };
 
+const createUser = async (req, res) => {
+  try {
+    const { displayName, email, password, image } = req.body;
+
+    const { code, message, token } = await usersService
+      .createUser({ displayName, email, password, image });
+    
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    return res.status(code).json({ token });
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
+  }
+};
+
 module.exports = {
   userLogin,
+  createUser,
 };
