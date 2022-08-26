@@ -16,7 +16,7 @@ const ReasonPhrases = {
   INTERNAL_ERROR: 'Internal server error!',
   INVALID_LENGTH: (field, length) => `"${field}" length must be at least ${length} characters long`,
   INVALID_EMAIL: '"email" must be a valid email',
-  FIELD_REQUIRED: (field) => `"${field}" field is required`,
+  FIELD_REQUIRED: (field) => `"${field}" is required`,
   USER_REGISTRED: 'User already registered',
   TOKEN_NOT_FOUND: 'Token not found',
   EXPIRED_TOKEN: 'Expired or invalid token',
