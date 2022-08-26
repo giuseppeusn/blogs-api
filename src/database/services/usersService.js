@@ -43,8 +43,20 @@ const createUser = async ({ displayName, email, password, image }) => {
 const getAllUsers = async () => User.findAll({ attributes:
   ['id', 'displayName', 'email', 'image'] });
 
+const getUser = async (id) => {
+  const user = await User.findOne({ where: { id },
+    attributes: ['id', 'displayName', 'email', 'image'] });
+
+  if (!user) {
+    return { code: StatusCodes.NOT_FOUND, message: ReasonPhrases.USER_NOT_EXIST };
+  }
+
+  return { code: StatusCodes.OK, response: user };
+};
+
 module.exports = {
   userLogin,
   createUser,
   getAllUsers,
+  getUser,
 };

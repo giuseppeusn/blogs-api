@@ -50,8 +50,26 @@ const getAllUsers = async (_req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { code, message, response } = await usersService.getUser(id);
+
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    res.status(code).json(response);
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
+  }
+};
+
 module.exports = {
   userLogin,
   createUser,
   getAllUsers,
+  getUser,
 };
