@@ -3,6 +3,7 @@ const StatusCodes = {
   CREATED: 201,
   NO_CONTENT: 204,
   BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
   NOT_FOUND: 404,
   CONFLICT: 409,
   UNPROCESSABLE: 422,
@@ -17,6 +18,8 @@ const ReasonPhrases = {
   INVALID_EMAIL: '"email" must be a valid email',
   FIELD_REQUIRED: (field) => `"${field}" field is required`,
   USER_REGISTRED: 'User already registered',
+  TOKEN_NOT_FOUND: 'Token not found',
+  EXPIRED_TOKEN: 'Expired or invalid token',
 };
 
 module.exports = {
