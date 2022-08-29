@@ -16,6 +16,9 @@ const createCategory = async (name) => {
   return { code: StatusCodes.CREATED, response };
 };
 
+const getAllCategories = async () => Category.findAll({ attributes: ['id', 'name'] });
+
 module.exports = {
   createCategory,
+  getAllCategories,
 };
