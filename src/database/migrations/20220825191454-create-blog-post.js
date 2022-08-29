@@ -22,14 +22,19 @@ module.exports = {
           model: 'Users',
           key: 'id'
         },
+        foreignKey: true,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      published: {
-        type: Sequelize.DATE
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        field: 'published',
       },
-      updated: {
-        type: Sequelize.DATE
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        field: 'updated',
       }
     });
   },

@@ -21,6 +21,7 @@ const ReasonPhrases = {
   TOKEN_NOT_FOUND: 'Token not found',
   EXPIRED_TOKEN: 'Expired or invalid token',
   USER_NOT_EXIST: 'User does not exist',
+  CATEGORY_NOT_FOUND: '"categoryIds" not found',
 };
 
 module.exports = {
