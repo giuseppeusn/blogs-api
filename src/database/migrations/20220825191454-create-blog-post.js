@@ -17,7 +17,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       userId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -27,11 +26,9 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       published: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updated: {
-        allowNull: false,
         type: Sequelize.DATE
       }
     });
