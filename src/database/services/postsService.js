@@ -42,10 +42,32 @@ const getAllPosts = async () => {
     ],
   });
 
-  return posts;
+  return { code: StatusCodes.OK, response: posts };
+};
+
+const getPost = async (id) => {
+  const posts = await BlogPost.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      {
+        model: Category, as: 'categories',
+      },
+    ],
+  });
+
+  if (!posts) {
+    return { code: StatusCodes.NOT_FOUND, message: ReasonPhrases.FIELD_NOT_EXIST('Post') };
+  }
+
+  return { code: StatusCodes.OK, response: posts };
 };
 
 module.exports = {
   createPost,
   getAllPosts,
+  getPost,
 };

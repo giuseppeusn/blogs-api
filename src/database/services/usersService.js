@@ -48,7 +48,7 @@ const getUser = async (id) => {
     attributes: ['id', 'displayName', 'email', 'image'] });
 
   if (!user) {
-    return { code: StatusCodes.NOT_FOUND, message: ReasonPhrases.USER_NOT_EXIST };
+    return { code: StatusCodes.NOT_FOUND, message: ReasonPhrases.FIELD_NOT_EXIST('User') };
   }
 
   return { code: StatusCodes.OK, response: user };

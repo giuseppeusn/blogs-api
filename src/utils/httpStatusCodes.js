@@ -20,7 +20,7 @@ const ReasonPhrases = {
   USER_REGISTRED: 'User already registered',
   TOKEN_NOT_FOUND: 'Token not found',
   EXPIRED_TOKEN: 'Expired or invalid token',
-  USER_NOT_EXIST: 'User does not exist',
+  FIELD_NOT_EXIST: (field) => `${field} does not exist`,
   CATEGORY_NOT_FOUND: '"categoryIds" not found',
 };
 
