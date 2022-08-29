@@ -25,6 +25,18 @@ const createPost = async (req, res) => {
   }
 };
 
+const getAllPosts = async (req, res) => {
+  const token = req.headers.authorization;
+  const { JWT_SECRET } = process.env;
+
+  const decodedToken = jwt.verify(token, JWT_SECRET);
+
+  const posts = await postsService.getAllPosts(decodedToken.data.id);
+
+  res.status(200).json(posts);
+};
+
 module.exports = {
   createPost,
+  getAllPosts,
 };
