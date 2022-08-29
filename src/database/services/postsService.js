@@ -66,8 +66,28 @@ const getPost = async (id) => {
   return { code: StatusCodes.OK, response: posts };
 };
 
+const updatePost = async (id, userId, title, content) => {
+  if (!title || !content) {
+    return { code: StatusCodes.BAD_REQUEST, message: ReasonPhrases.REQUIRED_FIELDS };
+  }
+
+  const [rowsAffected] = await BlogPost.update(
+    { title, content },
+    { where: { id, userId } },
+  );
+
+  if (rowsAffected < 1) {
+    return { code: StatusCodes.UNAUTHORIZED, message: ReasonPhrases.UNAUTHORIZED_USER };
+  }
+
+  const { response } = await getPost(id);
+
+  return { code: StatusCodes.OK, response };
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPost,
+  updatePost,
 };

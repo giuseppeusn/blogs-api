@@ -22,6 +22,7 @@ const ReasonPhrases = {
   EXPIRED_TOKEN: 'Expired or invalid token',
   FIELD_NOT_EXIST: (field) => `${field} does not exist`,
   CATEGORY_NOT_FOUND: '"categoryIds" not found',
+  UNAUTHORIZED_USER: 'Unauthorized user',
 };
 
 module.exports = {

@@ -43,8 +43,26 @@ const getPost = async (req, res) => {
   return res.status(code).json(response);
 };
 
+const updatePost = async (req, res) => {
+  const token = req.headers.authorization;
+  const { params: { id }, body: { title, content } } = req;
+  const { JWT_SECRET } = process.env;
+
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+
+  const { code, message, response } = await postsService
+    .updatePost(id, decodedToken.data.id, title, content);
+
+  if (message) {
+    return res.status(code).json({ message });
+  }
+
+  return res.status(code).json(response);
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPost,
+  updatePost,
 };
