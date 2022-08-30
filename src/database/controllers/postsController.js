@@ -60,9 +60,25 @@ const updatePost = async (req, res) => {
   return res.status(code).json(response);
 };
 
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { JWT_SECRET } = process.env;
+
+  const decodedToken = jwt.verify(token, JWT_SECRET);
+  const { code, message } = await postsService.deletePost(id, decodedToken.data.id);
+
+  if (message) {
+    return res.status(code).json({ message });
+  }
+
+  return res.status(code).end();
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPost,
   updatePost,
+  deletePost,
 };

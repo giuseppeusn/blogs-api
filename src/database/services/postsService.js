@@ -85,9 +85,26 @@ const updatePost = async (id, userId, title, content) => {
   return { code: StatusCodes.OK, response };
 };
 
+const deletePost = async (id, userId) => {
+  const { code, message } = await getPost(id);
+
+  if (message) {
+    return { code, message };
+  }
+
+  const rowsAffected = await BlogPost.destroy({ where: { id, userId } });
+
+  if (rowsAffected < 1) {
+    return { code: StatusCodes.UNAUTHORIZED, message: ReasonPhrases.UNAUTHORIZED_USER };
+  }
+
+  return { code: StatusCodes.NO_CONTENT };
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPost,
   updatePost,
+  deletePost,
 };
