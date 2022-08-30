@@ -48,7 +48,7 @@ const updatePost = async (req, res) => {
   const { params: { id }, body: { title, content } } = req;
   const { JWT_SECRET } = process.env;
 
-    const decodedToken = jwt.verify(token, JWT_SECRET);
+  const decodedToken = jwt.verify(token, JWT_SECRET);
 
   const { code, message, response } = await postsService
     .updatePost(id, decodedToken.data.id, title, content);

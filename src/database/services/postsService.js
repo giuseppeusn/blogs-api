@@ -71,6 +71,12 @@ const updatePost = async (id, userId, title, content) => {
     return { code: StatusCodes.BAD_REQUEST, message: ReasonPhrases.REQUIRED_FIELDS };
   }
 
+  const { code, message } = await getPost(id);
+
+  if (message) {
+    return { code, message };
+  }
+
   const [rowsAffected] = await BlogPost.update(
     { title, content },
     { where: { id, userId } },
