@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const usersService = require('../services/usersService');
 const { StatusCodes, ReasonPhrases } = require('../../utils/httpStatusCodes');
 
@@ -67,9 +68,27 @@ const getUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const { JWT_SECRET } = process.env;
+
+    const { data: { id } } = jwt.verify(token, JWT_SECRET);
+
+    await usersService.deleteUser(id);
+
+    return res.status(StatusCodes.NO_CONTENT).end();
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
+  }
+};
+
 module.exports = {
   userLogin,
   createUser,
   getAllUsers,
   getUser,
+  deleteUser,
 };
