@@ -4,6 +4,7 @@ const { StatusCodes, ReasonPhrases } = require('../../utils/httpStatusCodes');
 const config = require('../config/config');
 
 const sequelize = new Sequelize(config.development);
+const { Op } = Sequelize;
 
 const createPost = async ({ title, content, categoryIds, userId }) => {
   if (!title || !content) {
@@ -107,10 +108,34 @@ const deletePost = async (id, userId) => {
   return { code: StatusCodes.NO_CONTENT };
 };
 
+const searchPost = async (q) => {
+  const query = `%${q}%`;
+
+  const post = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: query } }, { content: { [Op.like]: query } }],
+    },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      {
+        model: Category, as: 'categories',
+      },
+    ],
+  });
+
+  return { code: StatusCodes.OK, response: post };
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPost,
   updatePost,
   deletePost,
+  searchPost,
 };
