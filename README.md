@@ -165,7 +165,7 @@ Backend project for managing a blog with a simple CRUD _(Create, Read, Update, D
 > 2 - Enter the directory `blogs-api/` <br>
 > 3 - Start docker <br>
 > 4 - Run the command `docker compose up -d` <br>
-> 5 - Run the command `docker exec -it store_manager bash` <br>
+> 5 - Run the command `docker exec -it blogs_api bash` <br>
 > 6 - Run the command `npm install` inside docker to install <br>
 > 7 - Run the command `npm run prestart` inside docker to create database and migrate <br>
 > 8 - Run the command `npm run seed` inside docker to populate database <br>
