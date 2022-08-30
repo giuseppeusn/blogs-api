@@ -8,10 +8,10 @@ const createPost = async (req, res) => {
     const { title, content, categoryIds } = req.body;
     const { JWT_SECRET } = process.env;
 
-    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const { data: { id: userId } } = jwt.verify(token, JWT_SECRET);
 
     const { code, message, response } = await postsService
-      .createPost({ title, content, categoryIds, userId: decodedToken.data.id });
+      .createPost({ title, content, categoryIds, userId });
 
     if (message) {
       return res.status(code).json({ message });
@@ -26,61 +26,91 @@ const createPost = async (req, res) => {
 };
 
 const getAllPosts = async (_req, res) => {
-  const { code, response } = await postsService.getAllPosts();
+  try {
+    const { code, response } = await postsService.getAllPosts();
 
-  res.status(code).json(response);
+    res.status(code).json(response);
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
+  }
 };
 
 const getPost = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const { code, message, response } = await postsService.getPost(id);
+    const { code, message, response } = await postsService.getPost(id);
 
-  if (message) {
-    return res.status(code).json({ message });
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    return res.status(code).json(response);
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
   }
-
-  return res.status(code).json(response);
 };
 
 const updatePost = async (req, res) => {
-  const token = req.headers.authorization;
-  const { params: { id }, body: { title, content } } = req;
-  const { JWT_SECRET } = process.env;
+  try {
+    const token = req.headers.authorization;
+    const { params: { id }, body: { title, content } } = req;
+    const { JWT_SECRET } = process.env;
 
-  const decodedToken = jwt.verify(token, JWT_SECRET);
+    const { data: { id: tokenId } } = jwt.verify(token, JWT_SECRET);
 
-  const { code, message, response } = await postsService
-    .updatePost(id, decodedToken.data.id, title, content);
+    const { code, message, response } = await postsService
+      .updatePost(id, tokenId, title, content);
 
-  if (message) {
-    return res.status(code).json({ message });
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    return res.status(code).json(response);
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
   }
-
-  return res.status(code).json(response);
 };
 
 const deletePost = async (req, res) => {
-  const { id } = req.params;
-  const token = req.headers.authorization;
-  const { JWT_SECRET } = process.env;
+  try {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    const { JWT_SECRET } = process.env;
 
-  const decodedToken = jwt.verify(token, JWT_SECRET);
-  const { code, message } = await postsService.deletePost(id, decodedToken.data.id);
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const { code, message } = await postsService.deletePost(id, decodedToken.data.id);
 
-  if (message) {
-    return res.status(code).json({ message });
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    return res.status(code).end();
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
   }
-
-  return res.status(code).end();
 };
 
 const searchPost = async (req, res) => {
-  const { q } = req.query;
+  try {
+    const { q } = req.query;
 
-  const { code, response } = await postsService.searchPost(q);
+    const { code, response } = await postsService.searchPost(q);
 
-  return res.status(code).json(response);
+    return res.status(code).json(response);
+  } catch (err) {
+    res
+      .status(StatusCodes.SERVER_ERROR)
+      .json({ message: `${ReasonPhrases.INTERNAL_ERROR} ${err.message}` });
+  }
 };
 
 module.exports = {
